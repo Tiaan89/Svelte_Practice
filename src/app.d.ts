@@ -8,3 +8,8 @@ declare namespace App {
 	// interface Session {}
 	// interface Stuff {}
 }
+
+type Staff = {
+	firstname: String;
+	lastname: String;
+}

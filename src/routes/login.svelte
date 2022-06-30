@@ -1,68 +1,26 @@
-<script lang='ts'>
-    import Child from "./child.svelte";
-    	export let user;
-        export let error;
+<script>
+  import { useForm, validators, HintGroup, Hint, email, required } from "svelte-use-form";
 
-        let myColor = "blue"
-
-        function handleClick(){
-            myColor = "yellow";
-        }
-
-        console.log(user);
+  const form = useForm();
 </script>
+<form use:form>
+  <h1>Login</h1>
 
-<h1 style="color: red;">Login Page</h1> 
-<Child />
-        <button on:click={handleClick}>Change color</button>
+  <input type="email" name="email" use:validators={[required, email]} placeholder="Email"/>
+  <HintGroup for="email">
+    <Hint on="required">This is a mandatory field</Hint>
+    <Hint on="email" hideWhenRequired>Email is not valid</Hint>
+  </HintGroup>
 
-<div class="containter">
-    {#if error}
-     <p>
-        {error}
-     </p>
-    {/if}
-    <form action="" method="post">
-        <label>
-            Username
-            <input type="text" name="username" autocomplete="off">
-        </label>
+  <input type="password" name="password" use:validators={[required]} placeholder="Password"/>
+  <Hint for="password" on="required">This is a mandatory field</Hint>
 
-        <label>
-            Password
-            <input type="password" name="password" autocomplete="off">
-        </label>
-
-        <input type="submit" value="Login">
-
-    </form>
-
-</div>
+  <button disabled={!$form.valid}>Login</button>
+</form>
 
 <style>
-    :global(h1) {
-        color: blue;
-    }
-    .container {
-        width: 100%;
-        height: 100vh;
-        display: grid;
-        place-items: center;
-    }
-
-    form {
-        padding: 2rem;
-        max-width: 500px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        border: 2px solid regb(148, 148, 148, 148);
-    }
-
-    label {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-    }
+	:global(.touched:invalid) {
+		border-color: red;
+		outline-color: red;
+	}
 </style>
